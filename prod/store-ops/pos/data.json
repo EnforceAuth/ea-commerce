@@ -1,0 +1,91 @@
+{
+  "users": {
+    "maria.cashier": {
+      "token": "maria_token_abc",
+      "role": "cashier",
+      "permissions": ["pos:sale", "pos:return", "pos:open_drawer"],
+      "department": "store_ops",
+      "active": true,
+      "exp": 1793456391,
+      "store_id": "STORE-042"
+    },
+    "james.shiftlead": {
+      "token": "james_token_def",
+      "role": "shift_lead",
+      "permissions": ["pos:sale", "pos:return", "pos:void", "pos:price_override", "pos:open_drawer", "pos:close_register", "timeclock:punch", "timeclock:view_team"],
+      "department": "store_ops",
+      "active": true,
+      "exp": 1793456391,
+      "store_id": "STORE-042"
+    },
+    "linda.storemgr": {
+      "token": "linda_token_ghi",
+      "role": "store_manager",
+      "permissions": ["pos:sale", "pos:return", "pos:void", "pos:price_override", "pos:open_drawer", "pos:close_register", "timeclock:punch", "timeclock:view_team", "timeclock:approve", "timeclock:edit"],
+      "department": "store_ops",
+      "active": true,
+      "exp": 1793456391,
+      "store_id": "STORE-042"
+    },
+    "robert.districtmgr": {
+      "token": "robert_token_jkl",
+      "role": "district_manager",
+      "permissions": ["pos:sale", "pos:return", "pos:void", "pos:price_override", "pos:open_drawer", "pos:close_register", "timeclock:punch", "timeclock:view_team", "timeclock:approve", "timeclock:edit", "timeclock:payroll_export"],
+      "department": "store_ops",
+      "active": true,
+      "exp": 1793456391,
+      "store_id": "STORE-HQ"
+    },
+    "kevin.terminated": {
+      "token": "kevin_token_old",
+      "role": "cashier",
+      "permissions": ["pos:sale"],
+      "department": "store_ops",
+      "active": false,
+      "exp": 1793456391,
+      "store_id": "STORE-042"
+    }
+  },
+  "stores": {
+    "STORE-042": {
+      "name": "EA Commerce - Westfield Mall",
+      "district": "northeast",
+      "timezone": "America/New_York",
+      "registers": ["REG-001", "REG-002", "REG-003", "REG-004"]
+    },
+    "STORE-043": {
+      "name": "EA Commerce - Downtown Flagship",
+      "district": "northeast",
+      "timezone": "America/New_York",
+      "registers": ["REG-001", "REG-002", "REG-003", "REG-004", "REG-005", "REG-006"]
+    },
+    "STORE-101": {
+      "name": "EA Commerce - Pacific Center",
+      "district": "west",
+      "timezone": "America/Los_Angeles",
+      "registers": ["REG-001", "REG-002"]
+    }
+  },
+  "roles": {
+    "cashier": {
+      "level": 1,
+      "description": "Front-line cashier — ring sales, process returns under $50",
+      "type": "hourly"
+    },
+    "shift_lead": {
+      "level": 2,
+      "description": "Supervises cashiers, can void and override prices up to 15%",
+      "type": "hourly"
+    },
+    "store_manager": {
+      "level": 3,
+      "description": "Full store authority — overrides up to 25%, approves timecards",
+      "type": "salaried"
+    },
+    "district_manager": {
+      "level": 4,
+      "description": "Multi-store oversight — any store access, payroll export, up to 50% discount authority",
+      "type": "salaried"
+    }
+  }
+}

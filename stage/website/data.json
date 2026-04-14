@@ -1,0 +1,60 @@
+{
+  "users": {
+    "shopper.jane": {
+      "token": "jane_token_web",
+      "role": "customer",
+      "permissions": ["orders:read_own", "orders:create", "profile:read", "profile:update", "basket:read", "basket:write", "basket:checkout"],
+      "department": "customers",
+      "active": true,
+      "exp": 1793456391
+    },
+    "shopper.loyalty": {
+      "token": "loyalty_token_web",
+      "role": "loyalty_gold",
+      "permissions": ["orders:read_own", "orders:create", "profile:read", "profile:update", "basket:read", "basket:write", "basket:checkout"],
+      "department": "customers",
+      "active": true,
+      "exp": 1793456391
+    },
+    "sarah.merch": {
+      "token": "sarah_merch_token",
+      "role": "merchandiser",
+      "permissions": ["products:create", "products:update", "promotions:create"],
+      "department": "merchandising",
+      "active": true,
+      "exp": 1793456391
+    },
+    "tom.marketing": {
+      "token": "tom_mktg_token",
+      "role": "marketing_manager",
+      "permissions": ["promotions:create", "promotions:approve", "promotions:publish", "promotions:kill"],
+      "department": "marketing",
+      "active": true,
+      "exp": 1793456391
+    },
+    "cs.agent.pat": {
+      "token": "pat_cs_token",
+      "role": "cs_agent",
+      "permissions": ["orders:read_all", "profile:read"],
+      "department": "customer_support",
+      "active": true,
+      "exp": 1793456391
+    },
+    "cs.lead.nina": {
+      "token": "nina_cslead_token",
+      "role": "cs_lead",
+      "permissions": ["orders:read_all", "orders:refund", "profile:read"],
+      "department": "customer_support",
+      "active": true,
+      "exp": 1793456391
+    },
+    "platform.admin": {
+      "token": "admin_token_xyz",
+      "role": "platform_admin",
+      "permissions": ["products:create", "products:update", "orders:read_all", "orders:refund", "promotions:create", "promotions:approve", "promotions:publish", "promotions:kill", "promotions:flash_sale", "admin:event_mode", "admin:rate_limits", "profile:read"],
+      "department": "engineering",
+      "active": true,
+      "exp": 1793456391
+    }
+  }
+}
