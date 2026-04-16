@@ -1,0 +1,40 @@
+name: Rego Lint (Regal)
+description: Lint changed Rego files using Regal
+
+inputs:
+  regal-version:
+    description: Regal version to install
+    required: false
+    default: v0.39.0
+
+runs:
+  using: composite
+  steps:
+    - uses: open-policy-agent/setup-regal@v1
+      with:
+        version: ${{ inputs.regal-version }}
+
+    - name: Get changed Rego files
+      id: changed
+      shell: bash
+      run: |
+        if [[ "${{ github.event_name }}" == "pull_request" && -n "${{ github.base_ref }}" ]]; then
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}...HEAD" -- '*.rego')
+        elif [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
+          FILES=$(git diff --name-only --diff-filter=ACMR "${{ github.event.before }}...HEAD" -- '*.rego')
+        else
+          # Fallback for manual/initial runs — lint all Rego files
+          FILES=$(git ls-files '*.rego')
+        fi
+        if [ -z "$FILES" ]; then
+          echo "has_files=false" >> "$GITHUB_OUTPUT"
+        else
+          DIRS=$(printf '%s\n' "$FILES" | while IFS= read -r f; do dirname "$f"; done | sort -u | tr '\n' ' ')
+          echo "has_files=true" >> "$GITHUB_OUTPUT"
+          echo "dirs=$DIRS" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Lint changed Rego files
+      if: steps.changed.outputs.has_files == 'true'
+      shell: bash
+      run: regal lint "${{ steps.changed.outputs.dirs }}"

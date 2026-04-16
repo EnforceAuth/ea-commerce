@@ -1,0 +1,43 @@
+# Deploys stage policies to EnforceAuth when stage/ changes on main.
+# Entity ID configured in EA_ENTITY_ID secret (stage environment).
+name: "Deploy: stage"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "stage/**"
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint stage policies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/rego-lint
+
+  deploy:
+    name: Deploy via EnforceAuth
+    needs: lint
+    runs-on: ubuntu-latest
+    environment: stage
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy Policy Bundle
+        uses: EnforceAuth/deploy-action@v1
+        with:
+          entity-id: ${{ secrets.EA_ENTITY_ID }}
+          api-url: ${{ vars.EA_API_URL }}
+          environment: stage
+          wait-for-completion: true
+          timeout-minutes: 10
