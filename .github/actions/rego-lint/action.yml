@@ -18,7 +18,14 @@ runs:
       id: changed
       shell: bash
       run: |
-        FILES=$(git diff --name-only --diff-filter=ACMR origin/${{ github.base_ref }}...HEAD -- '*.rego')
+        if [[ "${{ github.event_name }}" == "pull_request" && -n "${{ github.base_ref }}" ]]; then
+          FILES=$(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}...HEAD" -- '*.rego')
+        elif [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
+          FILES=$(git diff --name-only --diff-filter=ACMR "${{ github.event.before }}...HEAD" -- '*.rego')
+        else
+          # Fallback for manual/initial runs — lint all Rego files
+          FILES=$(git ls-files '*.rego')
+        fi
         if [ -z "$FILES" ]; then
           echo "has_files=false" >> "$GITHUB_OUTPUT"
         else
@@ -30,4 +37,4 @@ runs:
     - name: Lint changed Rego files
       if: steps.changed.outputs.has_files == 'true'
       shell: bash
-      run: regal lint ${{ steps.changed.outputs.dirs }}
+      run: regal lint "${{ steps.changed.outputs.dirs }}"

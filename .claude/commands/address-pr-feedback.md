@@ -56,17 +56,31 @@ For each comment, determine:
 For valid concerns:
 1. Read the file and understand the context
 2. Apply the fix
-3. Reply to the review comment thread:
+3. Reply using the correct channel by source type:
    ```bash
+   # Inline review comment
    gh api "repos/{owner}/{repo}/pulls/{pr}/comments/{comment_id}/replies" \
      -X POST -f body="Fixed — <brief explanation>"
    ```
+   ```bash
+   # General PR comment (issue comment on PR)
+   gh pr comment {pr} --body "Addressed: <brief explanation>"
+   ```
+   ```bash
+   # Review-body level feedback
+   gh pr review {pr} --comment --body "Addressed review feedback: <brief explanation>"
+   ```
 
 For false positives:
-1. Reply explaining why:
+1. Reply using the matching channel (inline, general, or review):
    ```bash
+   # Inline review comment
    gh api "repos/{owner}/{repo}/pulls/{pr}/comments/{comment_id}/replies" \
      -X POST -f body="<explanation of why this is safe>"
+   ```
+   ```bash
+   # General PR comment
+   gh pr comment {pr} --body "<explanation of why this is safe>"
    ```
 
 ### 6. Run tests

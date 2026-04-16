@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: open-policy-agent/setup-opa@v2
         with:
-          version: latest
+          version: "1.15"
       - run: opa test dev/ -v
 
   test-stage:
@@ -60,7 +60,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: open-policy-agent/setup-opa@v2
         with:
-          version: latest
+          version: "1.15"
       - run: opa test stage/ -v
 
   test-prod:
@@ -72,5 +72,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: open-policy-agent/setup-opa@v2
         with:
-          version: latest
+          version: "1.15"
       - run: opa test prod/ -v
