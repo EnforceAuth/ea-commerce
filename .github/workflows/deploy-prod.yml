@@ -27,7 +27,7 @@ jobs:
     name: Lint prod policies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/rego-lint
@@ -35,12 +35,13 @@ jobs:
   dry-run:
     name: Validate (Dry Run)
     needs: lint
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Dry-run deployment
         id: dry-run
@@ -66,14 +67,14 @@ jobs:
   deploy:
     name: Deploy via EnforceAuth
     needs: dry-run
-    if: needs.dry-run.result == 'success'
+    if: github.ref == 'refs/heads/main' && needs.dry-run.result == 'success'
     runs-on: ubuntu-latest
     environment: production
     permissions:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Deploy Policy Bundle
         uses: EnforceAuth/deploy-action@v1

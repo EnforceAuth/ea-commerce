@@ -82,6 +82,10 @@ For false positives:
    # General PR comment
    gh pr comment {pr} --body "<explanation of why this is safe>"
    ```
+   ```bash
+   # Review-body level feedback
+   gh pr review {pr} --comment --body "<explanation of why this is safe>"
+   ```
 
 ### 6. Run tests
 
@@ -108,5 +112,5 @@ git push
 - **Fixed**: List of issues fixed
 - **Dismissed**: False positives with reasoning
 - **Stale**: Comments on already-changed code
-- **Needs input**: Ambiguous items requiring user decision
+- **Needs user input**: Ambiguous items requiring user decision
 - **Tests**: Pass/fail status

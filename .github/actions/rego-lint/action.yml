@@ -29,7 +29,7 @@ runs:
         if [ -z "$FILES" ]; then
           echo "has_files=false" >> "$GITHUB_OUTPUT"
         else
-          DIRS=$(echo "$FILES" | xargs -I{} dirname {} | sort -u | tr '\n' ' ')
+          DIRS=$(printf '%s\n' "$FILES" | while IFS= read -r f; do dirname "$f"; done | sort -u | tr '\n' ' ')
           echo "has_files=true" >> "$GITHUB_OUTPUT"
           echo "dirs=$DIRS" >> "$GITHUB_OUTPUT"
         fi
