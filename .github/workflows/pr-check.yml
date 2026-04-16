@@ -7,6 +7,16 @@ on:
     branches: [main]
 
 jobs:
+  # ----- Lint changed Rego files with Regal -----
+  lint:
+    name: Rego Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/rego-lint
+
   # ----- Detect which environment folders were touched -----
   changes:
     name: Detect changed environments

@@ -14,6 +14,15 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    name: Lint dev policies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/rego-lint
+
   test:
     name: Test dev policies
     runs-on: ubuntu-latest
@@ -26,7 +35,7 @@ jobs:
 
   deploy:
     name: Deploy via EnforceAuth
-    needs: test
+    needs: [lint, test]
     runs-on: ubuntu-latest
     environment: dev
     steps:

@@ -24,6 +24,15 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    name: Lint prod policies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/rego-lint
+
   test:
     name: Test prod policies
     runs-on: ubuntu-latest
@@ -36,7 +45,7 @@ jobs:
 
   dry-run:
     name: Validate (Dry Run)
-    needs: test
+    needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
