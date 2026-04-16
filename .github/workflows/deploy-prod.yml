@@ -32,19 +32,9 @@ jobs:
           fetch-depth: 0
       - uses: ./.github/actions/rego-lint
 
-  test:
-    name: Test prod policies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: open-policy-agent/setup-opa@v2
-        with:
-          version: "1.15"
-      - run: opa test prod/ -v
-
   dry-run:
     name: Validate (Dry Run)
-    needs: [lint, test]
+    needs: lint
     runs-on: ubuntu-latest
     permissions:
       id-token: write

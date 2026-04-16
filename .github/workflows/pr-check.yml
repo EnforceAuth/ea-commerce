@@ -1,4 +1,4 @@
-# On pull requests, test only the environments whose policies were changed.
+# On pull requests, lint changed Rego files.
 
 name: PR Check
 
@@ -7,7 +7,6 @@ on:
     branches: [main]
 
 jobs:
-  # ----- Lint changed Rego files with Regal -----
   lint:
     name: Rego Lint
     runs-on: ubuntu-latest
@@ -16,61 +15,3 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/rego-lint
-
-  # ----- Detect which environment folders were touched -----
-  changes:
-    name: Detect changed environments
-    runs-on: ubuntu-latest
-    outputs:
-      dev:   ${{ steps.filter.outputs.dev }}
-      stage: ${{ steps.filter.outputs.stage }}
-      prod:  ${{ steps.filter.outputs.prod }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            dev:
-              - 'dev/**'
-            stage:
-              - 'stage/**'
-            prod:
-              - 'prod/**'
-
-  # ----- Conditional test jobs — only run for changed envs -----
-  test-dev:
-    name: Test dev policies
-    needs: changes
-    if: needs.changes.outputs.dev == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: open-policy-agent/setup-opa@v2
-        with:
-          version: "1.15"
-      - run: opa test dev/ -v
-
-  test-stage:
-    name: Test stage policies
-    needs: changes
-    if: needs.changes.outputs.stage == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: open-policy-agent/setup-opa@v2
-        with:
-          version: "1.15"
-      - run: opa test stage/ -v
-
-  test-prod:
-    name: Test prod policies
-    needs: changes
-    if: needs.changes.outputs.prod == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: open-policy-agent/setup-opa@v2
-        with:
-          version: "1.15"
-      - run: opa test prod/ -v

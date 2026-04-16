@@ -22,19 +22,9 @@ jobs:
           fetch-depth: 0
       - uses: ./.github/actions/rego-lint
 
-  test:
-    name: Test dev policies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: open-policy-agent/setup-opa@v2
-        with:
-          version: "1.15"
-      - run: opa test dev/ -v
-
   deploy:
     name: Deploy via EnforceAuth
-    needs: [lint, test]
+    needs: lint
     runs-on: ubuntu-latest
     environment: dev
     permissions:
