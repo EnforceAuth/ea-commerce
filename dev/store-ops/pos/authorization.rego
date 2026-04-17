@@ -1,5 +1,5 @@
 # METADATA
-# title: POS Transaction Authorization
+# title: POS Authorization
 # description: Controls who can perform point-of-sale operations including sales, returns, voids, and manager overrides
 # related_resources:
 #   - ref: https://wiki.acmecorp.internal/retail-ops/pos-security
@@ -102,6 +102,8 @@ _at_assigned_store(user_claims) if {
 _return_limit_for_role := {"cashier": 50, "shift_lead": 200, "store_manager": 999999, "district_manager": 999999}
 
 _within_return_limit(user_claims) if {
+	is_number(input.request.body.amount)
+	input.request.body.amount >= 0
 	limit := _return_limit_for_role[user_claims.role]
 	input.request.body.amount <= limit
 }
@@ -112,6 +114,8 @@ _within_return_limit(user_claims) if {
 _discount_limit_for_role := {"shift_lead": 15, "store_manager": 25, "district_manager": 50}
 
 _within_discount_limit(user_claims) if {
+	is_number(input.request.body.discount_percent)
+	input.request.body.discount_percent >= 0
 	limit := _discount_limit_for_role[user_claims.role]
 	input.request.body.discount_percent <= limit
 }
