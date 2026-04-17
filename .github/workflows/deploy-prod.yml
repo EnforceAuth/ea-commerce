@@ -1,11 +1,11 @@
 # Deploys prod policies to EnforceAuth when prod/ changes on main.
-# Entity ID configured in EA_ENTITY_ID secret (production environment).
+# Entity ID configured in EA_ENTITY_ID secret (prod environment).
 #
 # Safety controls:
 #   - Dry-run validation before deploy
 #   - GitHub environment protection rules (configure required reviewers
-#     on the "production" environment in repo settings)
-#   - Concurrency lock prevents parallel production deploys
+#     on the "prod" environment in repo settings)
+#   - Concurrency lock prevents parallel prod deploys
 name: "Deploy: prod"
 
 on:
@@ -16,7 +16,7 @@ on:
       - "prod/**"
 
 concurrency:
-  group: deploy-production
+  group: deploy-prod
   cancel-in-progress: false
 
 permissions:
@@ -49,7 +49,7 @@ jobs:
         with:
           entity-id: ${{ secrets.EA_ENTITY_ID }}
           api-url: ${{ vars.EA_API_URL }}
-          environment: production
+          environment: prod
           dry-run: true
 
       - name: Print dry-run summary
@@ -69,7 +69,7 @@ jobs:
     needs: dry-run
     if: github.ref == 'refs/heads/main' && needs.dry-run.result == 'success'
     runs-on: ubuntu-latest
-    environment: production
+    environment: prod
     permissions:
       id-token: write
       contents: read
@@ -81,6 +81,6 @@ jobs:
         with:
           entity-id: ${{ secrets.EA_ENTITY_ID }}
           api-url: ${{ vars.EA_API_URL }}
-          environment: production
+          environment: prod
           wait-for-completion: true
           timeout-minutes: 10
