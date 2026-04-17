@@ -1,5 +1,5 @@
 # METADATA
-# title: POS Transaction Authorization
+# title: POS Authorization
 # description: Controls who can perform point-of-sale operations including sales, returns, voids, and manager overrides
 # related_resources:
 #   - ref: https://wiki.acmecorp.internal/retail-ops/pos-security
