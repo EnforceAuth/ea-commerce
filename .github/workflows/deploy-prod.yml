@@ -4,8 +4,8 @@
 # Safety controls:
 #   - Dry-run validation before deploy
 #   - GitHub environment protection rules (configure required reviewers
-#     on the "production" environment in repo settings)
-#   - Concurrency lock prevents parallel production deploys
+#     on the "prod" environment in repo settings)
+#   - Concurrency lock prevents parallel prod deploys
 name: "Deploy: prod"
 
 on:
