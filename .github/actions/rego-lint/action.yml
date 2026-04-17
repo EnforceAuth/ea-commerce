@@ -29,7 +29,7 @@ runs:
         if [ -z "$FILES" ]; then
           echo "has_files=false" >> "$GITHUB_OUTPUT"
         else
-          DIRS=$(printf '%s\n' "$FILES" | while IFS= read -r f; do dirname "$f"; done | sort -u | tr '\n' ' ')
+          DIRS=$(printf '%s\n' "$FILES" | while IFS= read -r f; do dirname "$f"; done | sort -u | tr '\n' ' ' | sed 's/ *$//')
           echo "has_files=true" >> "$GITHUB_OUTPUT"
           echo "dirs=$DIRS" >> "$GITHUB_OUTPUT"
         fi
@@ -37,4 +37,4 @@ runs:
     - name: Lint changed Rego files
       if: steps.changed.outputs.has_files == 'true'
       shell: bash
-      run: regal lint "${{ steps.changed.outputs.dirs }}"
+      run: regal lint ${{ steps.changed.outputs.dirs }}
