@@ -29,11 +29,13 @@ runs:
         if [ -z "$FILES" ]; then
           echo "has_files=false" >> "$GITHUB_OUTPUT"
         else
-          DIRS=$(printf '%s\n' "$FILES" | while IFS= read -r f; do dirname "$f"; done | sort -u)
+          # Resolve to environment roots (dev/stage/prod) so regal can resolve
+          # cross-directory imports like data.shared.authentication
+          ROOTS=$(printf '%s\n' "$FILES" | cut -d/ -f1 | sort -u)
           echo "has_files=true" >> "$GITHUB_OUTPUT"
           {
-            echo "dirs<<EOF"
-            echo "$DIRS"
+            echo "roots<<EOF"
+            echo "$ROOTS"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
         fi
@@ -42,7 +44,7 @@ runs:
       if: steps.changed.outputs.has_files == 'true'
       shell: bash
       env:
-        CHANGED_DIRS: ${{ steps.changed.outputs.dirs }}
+        CHANGED_ROOTS: ${{ steps.changed.outputs.roots }}
       run: |
-        mapfile -t dirs <<< "$CHANGED_DIRS"
-        regal lint "${dirs[@]}"
+        mapfile -t roots <<< "$CHANGED_ROOTS"
+        regal lint "${roots[@]}"
