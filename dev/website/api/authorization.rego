@@ -1,6 +1,8 @@
 # METADATA
 # title: Website API Authorization
-# description: Controls access to the e-commerce REST API — product catalog, orders, customer profiles, and admin operations
+# description: >-
+#   Controls access to the e-commerce REST API — product catalog,
+#   orders, customer profiles, and admin operations
 # authors:
 #   - name: Website Engineering
 package website.api.authorization

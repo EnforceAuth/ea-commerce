@@ -39,8 +39,7 @@ user_active(user_claims) if {
 
 # Helper to get authenticated user claims
 authenticated_claims := user_claims if {
-	token := extract_token
-	valid_token(token)
-	user_claims := claims(token)
+	valid_token(extract_token)
+	user_claims := claims(extract_token)
 	user_active(user_claims)
 }

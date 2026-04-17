@@ -1,0 +1,18 @@
+project:
+  roots:
+    - dev
+    - prod
+    - stage
+
+rules:
+  idiomatic:
+    directory-package-mismatch:
+      level: ignore
+    no-defined-entrypoint:
+      level: ignore
+  imports:
+    unresolved-reference:
+      level: ignore
+  performance:
+    defer-assignment:
+      level: ignore

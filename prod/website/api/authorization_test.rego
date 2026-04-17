@@ -52,21 +52,18 @@ mock_users := {
 # =============================================================================
 
 test_anyone_browse_products if {
-	authorization.allow_public with input as {
-		"request": {"http": {"method": "GET", "path": "/api/products"}},
-	}
+	authorization.allow_public with input as {"request": {"http": {"method": "GET", "path": "/api/products"}}}
 }
 
 test_anyone_view_single_product if {
-	authorization.allow_public_product with input as {
-		"request": {"http": {"method": "GET", "path": "/api/products/SKU-12345"}},
-	}
+	authorization.allow_public_product with input as {"request": {"http": {
+		"method": "GET",
+		"path": "/api/products/SKU-12345",
+	}}}
 }
 
 test_anyone_browse_categories if {
-	authorization.allow_public with input as {
-		"request": {"http": {"method": "GET", "path": "/api/categories"}},
-	}
+	authorization.allow_public with input as {"request": {"http": {"method": "GET", "path": "/api/categories"}}}
 }
 
 # =============================================================================
@@ -74,39 +71,30 @@ test_anyone_browse_categories if {
 # =============================================================================
 
 test_customer_view_own_orders if {
-	authorization.allow_view_own_orders with input as {
-		"request": {
-			"http": {
-				"method": "GET",
-				"path": "/api/orders/mine",
-				"headers": {"authorization": "Bearer token-shopper"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_view_own_orders with input as {"request": {"http": {
+		"method": "GET",
+		"path": "/api/orders/mine",
+		"headers": {"authorization": "Bearer token-shopper"},
+	}}}
+		with data.users as mock_users
 }
 
 test_customer_place_order if {
-	authorization.allow_place_order with input as {
-		"request": {
-			"http": {
-				"method": "POST",
-				"path": "/api/orders",
-				"headers": {"authorization": "Bearer token-shopper"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_place_order with input as {"request": {"http": {
+		"method": "POST",
+		"path": "/api/orders",
+		"headers": {"authorization": "Bearer token-shopper"},
+	}}}
+		with data.users as mock_users
 }
 
 test_customer_cannot_view_all_orders if {
-	not authorization.allow_admin_view_orders with input as {
-		"request": {
-			"http": {
-				"method": "GET",
-				"path": "/api/admin/orders",
-				"headers": {"authorization": "Bearer token-shopper"},
-			},
-		}
-	} with data.users as mock_users
+	not authorization.allow_admin_view_orders with input as {"request": {"http": {
+		"method": "GET",
+		"path": "/api/admin/orders",
+		"headers": {"authorization": "Bearer token-shopper"},
+	}}}
+		with data.users as mock_users
 }
 
 # =============================================================================
@@ -114,27 +102,21 @@ test_customer_cannot_view_all_orders if {
 # =============================================================================
 
 test_customer_view_profile if {
-	authorization.allow_view_profile with input as {
-		"request": {
-			"http": {
-				"method": "GET",
-				"path": "/api/profile",
-				"headers": {"authorization": "Bearer token-shopper"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_view_profile with input as {"request": {"http": {
+		"method": "GET",
+		"path": "/api/profile",
+		"headers": {"authorization": "Bearer token-shopper"},
+	}}}
+		with data.users as mock_users
 }
 
 test_customer_update_profile if {
-	authorization.allow_update_profile with input as {
-		"request": {
-			"http": {
-				"method": "PUT",
-				"path": "/api/profile",
-				"headers": {"authorization": "Bearer token-shopper"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_update_profile with input as {"request": {"http": {
+		"method": "PUT",
+		"path": "/api/profile",
+		"headers": {"authorization": "Bearer token-shopper"},
+	}}}
+		with data.users as mock_users
 }
 
 # =============================================================================
@@ -142,39 +124,30 @@ test_customer_update_profile if {
 # =============================================================================
 
 test_merchandiser_create_product if {
-	authorization.allow_admin_create_product with input as {
-		"request": {
-			"http": {
-				"method": "POST",
-				"path": "/api/admin/products",
-				"headers": {"authorization": "Bearer token-merch"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_admin_create_product with input as {"request": {"http": {
+		"method": "POST",
+		"path": "/api/admin/products",
+		"headers": {"authorization": "Bearer token-merch"},
+	}}}
+		with data.users as mock_users
 }
 
 test_customer_create_product_denied if {
-	not authorization.allow_admin_create_product with input as {
-		"request": {
-			"http": {
-				"method": "POST",
-				"path": "/api/admin/products",
-				"headers": {"authorization": "Bearer token-shopper"},
-			},
-		}
-	} with data.users as mock_users
+	not authorization.allow_admin_create_product with input as {"request": {"http": {
+		"method": "POST",
+		"path": "/api/admin/products",
+		"headers": {"authorization": "Bearer token-shopper"},
+	}}}
+		with data.users as mock_users
 }
 
 test_merchandiser_update_product if {
-	authorization.allow_admin_update_product with input as {
-		"request": {
-			"http": {
-				"method": "PATCH",
-				"path": "/api/admin/products/SKU-12345",
-				"headers": {"authorization": "Bearer token-merch"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_admin_update_product with input as {"request": {"http": {
+		"method": "PATCH",
+		"path": "/api/admin/products/SKU-12345",
+		"headers": {"authorization": "Bearer token-merch"},
+	}}}
+		with data.users as mock_users
 }
 
 # =============================================================================
@@ -182,37 +155,28 @@ test_merchandiser_update_product if {
 # =============================================================================
 
 test_cs_agent_refund_denied if {
-	not authorization.allow_admin_refund with input as {
-		"request": {
-			"http": {
-				"method": "POST",
-				"path": "/api/admin/orders/ORD-999/refund",
-				"headers": {"authorization": "Bearer token-csagent"},
-			},
-		}
-	} with data.users as mock_users
+	not authorization.allow_admin_refund with input as {"request": {"http": {
+		"method": "POST",
+		"path": "/api/admin/orders/ORD-999/refund",
+		"headers": {"authorization": "Bearer token-csagent"},
+	}}}
+		with data.users as mock_users
 }
 
 test_cs_lead_refund_allowed if {
-	authorization.allow_admin_refund with input as {
-		"request": {
-			"http": {
-				"method": "POST",
-				"path": "/api/admin/orders/ORD-999/refund",
-				"headers": {"authorization": "Bearer token-cslead"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_admin_refund with input as {"request": {"http": {
+		"method": "POST",
+		"path": "/api/admin/orders/ORD-999/refund",
+		"headers": {"authorization": "Bearer token-cslead"},
+	}}}
+		with data.users as mock_users
 }
 
 test_admin_refund_allowed if {
-	authorization.allow_admin_refund with input as {
-		"request": {
-			"http": {
-				"method": "POST",
-				"path": "/api/admin/orders/ORD-999/refund",
-				"headers": {"authorization": "Bearer token-admin"},
-			},
-		}
-	} with data.users as mock_users
+	authorization.allow_admin_refund with input as {"request": {"http": {
+		"method": "POST",
+		"path": "/api/admin/orders/ORD-999/refund",
+		"headers": {"authorization": "Bearer token-admin"},
+	}}}
+		with data.users as mock_users
 }
